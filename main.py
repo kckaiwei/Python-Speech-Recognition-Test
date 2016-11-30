@@ -6,7 +6,12 @@ import speech_recognition as sr
 
 def callback(recognizer, audio):
     try:
-        print recognizer.recognize_sphinx(audio)
+        text = recognizer.recognize_sphinx(audio)
+        print text
+        if str(text).lower() == "exit program":
+            stop_listening()
+        else:
+            pass
     except sr.UnknownValueError:
         print("Sphinx could not understand audio")
     except sr.RequestError as e:
@@ -23,4 +28,6 @@ r.phrase_threshold = 0.2
 m = sr.Microphone()
 with m as source:
     r.adjust_for_ambient_noise(source)
+
+print "Starting Recording"
 stop_listening = r.listen_in_background(m, callback)
